@@ -3,8 +3,9 @@ package com.workshop.usermanagement.service;
  import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import com.workshop.usermanagement.dto.UserDto;
-import com.workshop.usermanagement.entity.UserEntity;
-import com.workshop.usermanagement.repo.UserRepository;
+ import com.workshop.usermanagement.entity.UserEntity;
+ import com.workshop.usermanagement.exception.EntityNotFoundException;
+ import com.workshop.usermanagement.repo.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,11 +29,13 @@ public class UserService {
     }
 
     public UserDto getUser(Integer userId) {
-        return mapper.map(userRepository.findById(userId).get(), UserDto.class);
+        Optional<UserEntity> userEntityOptional = userRepository.findById(userId);
+        UserEntity userEntity = userEntityOptional.orElseThrow(() -> new EntityNotFoundException("User with id= " + userId + " was not found"));
+
+        return mapper.map(userEntity, UserDto.class);
     }
 
     public UserDto editUser(Integer userId) {
-        //TODO: implement action
         return mapper.map(userRepository.findById(userId).get(), UserDto.class);
     }
 
