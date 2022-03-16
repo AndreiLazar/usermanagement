@@ -31,7 +31,6 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-
     @PutMapping("/{id}")
     public UserDto editUser(@PathVariable("id") Integer id) {
         return userService.editUser(id);
